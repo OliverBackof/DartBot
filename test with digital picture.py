@@ -9,7 +9,7 @@ old = cv2.imread("./Markers/dart.png")
 new = cv2.imread("./Markers/dart.png")
 impact = getDartImpactTest(old, new)
 while True:
-    impact = (random.randrange(0,320),random.randrange(0,320))
+    impact = (716,166)
     ferries = getFerriPoints(new)
     field = coordsToField(ferries, impact, new)
     plt.figure()

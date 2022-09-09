@@ -4,7 +4,7 @@ from cv2 import aruco
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
-
+debug = True
 class ferrimerri:
     def __init__(self,id, x,y):
         self.id = id
@@ -14,17 +14,21 @@ class ferrimerri:
     def __str__(self):
         return "ID = " + str(self.id)+"\nCoordinaten = "+ str(self.x)+ str(self.y)
 
+    def __eq__(self, other):
+        return self.id == other
+
 
 def getFerriPoints(frame):
+    grayImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    (thresh, gray) = cv2.threshold(grayImage, 127, 255, cv2.THRESH_BINARY)
     myFerriMerris = []
-    aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_1000)
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_1000)
     parameters =  aruco.DetectorParameters_create()
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
     frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
-    #plt.figure()
-    #plt.imshow(frame_markers)
+    if debug:plt.figure()
+    if debug:plt.imshow(frame_markers)
+    print("Number of Ferries detected :", len(ids), "\n Ferries detected :", ids)
     for i in range(len(ids)):
         if ids[i] not in [3,6,9,12]:
             break
@@ -32,8 +36,8 @@ def getFerriPoints(frame):
         temp = ferrimerri(ids[i], [c[:, 0].mean()][0], [c[:, 1].mean()][0])
         myFerriMerris.append(temp)
         c = corners[i][0]
-        #plt.plot([c[:, 0].mean()], [c[:, 1].mean()], "o", label = "id={0}".format(ids[i]))
-    #plt.legend()
-    #plt.show()
+        if debug:plt.plot([c[:, 0].mean()], [c[:, 1].mean()], "o", label = "id={0}".format(ids[i]))
+    if debug:plt.legend()
+    if debug:plt.show()
 
     return myFerriMerris
