@@ -4,6 +4,7 @@ from cv2 import aruco
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
+
 class ferrimerri:
     def __init__(self,id, x,y):
         self.id = id
@@ -22,17 +23,17 @@ def getFerriPoints(frame):
     parameters =  aruco.DetectorParameters_create()
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
     frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
-    plt.figure()
-    plt.imshow(frame_markers)
+    #plt.figure()
+    #plt.imshow(frame_markers)
     for i in range(len(ids)):
         if ids[i] not in [3,6,9,12]:
             break
         c = corners[i][0]
-        temp = ferrimerri(ids[i], [c[:, 0].mean()], [c[:, 1].mean()])
+        temp = ferrimerri(ids[i], [c[:, 0].mean()][0], [c[:, 1].mean()][0])
         myFerriMerris.append(temp)
         c = corners[i][0]
-        plt.plot([c[:, 0].mean()], [c[:, 1].mean()], "o", label = "id={0}".format(ids[i]))
-    plt.legend()
-    plt.show()
+        #plt.plot([c[:, 0].mean()], [c[:, 1].mean()], "o", label = "id={0}".format(ids[i]))
+    #plt.legend()
+    #plt.show()
 
     return myFerriMerris
