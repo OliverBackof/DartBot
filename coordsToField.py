@@ -29,25 +29,26 @@ def get_intersections(x0, y0, r0, x1, y1, r1):
         return (x3, y3, x4, y4)
 
 def coordsToField(ferries, impact, after):
-    if len(ferries) < 2:
-        print("Couldnt find enough Ferries")
-        return None
     dimensions = after.shape
-    print(dimensions)
     impactForDistance = impact
     print("Impact = ", impact)
+    xC = 0
+    yC = 0
     x1C, y1C, x2C, y2C = 0, 0, 0, 0
+    #for x in ferries:
+    #    for y in ferries:
+    #        if x != y:
+    #            intersection = get_intersections(x.x,x.y,23,y.x,y.y,22)
+    #            print("intersecting :", intersection)
     for x in ferries:
-        for y in ferries:
-            if x != y:
-                x1C, y1C, x2C, y2C = get_intersections(x.x,x.y,22,y.x,y.y,22)
-                print("intersecting :", x1C,y1C,x2C, y2C)
+        xC += x.x
+        yC += x.y
 
     middleForDistance = (xC/len(ferries),yC/len(ferries))
     print("middle = ",middleForDistance)
     impactForAngle = (impact[0]-middleForDistance[0],impact[1]-middleForDistance[1])
     distancefromThree = math.dist(middleForDistance,(ferries[0].x,ferries[0].y))
-    multiplicator = 17/distancefromThree
+    multiplicator = 30/distancefromThree
     distanceToBull = math.dist(middleForDistance,impactForDistance)*multiplicator
     print("distanceToBull = ", distanceToBull)
     if distanceToBull <= 0.6:
