@@ -1,11 +1,11 @@
 import cv2
-def getDartImpact(before,after):
-    print(before.shape,after.shape)
-    gray_image_after = cv2.cvtColor(after, cv2.COLOR_BGR2GRAY)
-    gray_frame_after = cv2.GaussianBlur(gray_image_after, (21, 21), 0)
+def getDartImpact(before,after, debug):
+    if debug:print(before.shape,after.shape)
+    gray_frame_after = cv2.cvtColor(after, cv2.COLOR_BGR2GRAY)
+    #gray_frame_after = cv2.GaussianBlur(gray_image_after, (21, 21), 0)
 
-    gray_image_before = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
-    gray_frame_before = cv2.GaussianBlur(gray_image_before, (21, 21), 0)
+    gray_frame_before = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
+    #gray_frame_before = cv2.GaussianBlur(gray_image_before, (21, 21), 0)
 
     initialState = gray_frame_before
 

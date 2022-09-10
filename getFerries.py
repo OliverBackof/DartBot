@@ -4,7 +4,6 @@ from cv2 import aruco
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
-debug = True
 class ferrimerri:
     def __init__(self,id, x,y):
         self.id = id
@@ -18,7 +17,7 @@ class ferrimerri:
         return self.id == other
 
 
-def getFerriPoints(cam):
+def getFerriPoints(cam, debug):
     ids = [0]
     while len(ids) < 4:
         ret, frame = cam.read()
@@ -31,7 +30,7 @@ def getFerriPoints(cam):
         frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
     if debug:plt.figure()
     if debug:plt.imshow(frame_markers)
-    print("Number of Ferries detected :", len(ids), "\n Ferries detected :", ids)
+    if debug:print("Number of Ferries detected :", len(ids), "\n Ferries detected :", ids)
     for i in range(len(ids)):
         if ids[i] < 13:
             c = corners[i][0]
