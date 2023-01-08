@@ -1,4 +1,5 @@
 import math
+from transformPic import transformPicture
 def get_intersections(x0, y0, r0, x1, y1, r1):
     # circle 1: (x0, y0), radius r0
     # circle 2: (x1, y1), radius r1
@@ -28,26 +29,14 @@ def get_intersections(x0, y0, r0, x1, y1, r1):
         return (x3, y3, x4, y4)
 
 def coordsToField(ferries, impact, after, debug):
-    dimensions = after.shape
     impactForDistance = impact
     if debug:print("Impact = ", impact)
-    xC = 0
-    yC = 0
-    x1C, y1C, x2C, y2C = 0, 0, 0, 0
-    #for x in ferries:
-    #    for y in ferries:
-    #        if x != y:
-    #            intersection = get_intersections(x.x,x.y,23,y.x,y.y,22)
-    #            if debug:print("intersecting :", intersection)
-    for x in ferries:
-        xC += x.x
-        yC += x.y
 
-    middleForDistance = (xC/len(ferries),yC/len(ferries))
+    middleForDistance = 500,500
     if debug:print("middle = ",middleForDistance)
     impactForAngle = (impact[0]-middleForDistance[0],impact[1]-middleForDistance[1])
     distancefromThree = math.dist(middleForDistance,(ferries[0].x,ferries[0].y))
-    multiplicator = 30/distancefromThree
+    multiplicator = 30/500
     distanceToBull = math.dist(middleForDistance,impactForDistance)*multiplicator
     if debug:print("distanceToBull = ", distanceToBull)
     if distanceToBull <= 0.6:
@@ -71,7 +60,7 @@ def coordsToField(ferries, impact, after, debug):
         angle+=360
     angle += 9
     sections = [6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2, 15, 10]
-    sections = [6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 20, 1, 18, 4, 13]
+    sections = [6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 20, 1, 18, 4, 13, 6]
     section = sections[math.floor(angle / 18)]
     if debug:print(section)
     return(field,section, middleForDistance)

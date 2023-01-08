@@ -1,27 +1,25 @@
-import cv2
-# Runs infinitely until significant movement in camera
-def isDifference(video):
-
-    initialState = None
-    while True:
-       check, cur_frame = video.read()
-       gray_image = cv2.cvtColor(cur_frame, cv2.COLOR_BGR2GRAY)
-       gray_frame = cv2.GaussianBlur(gray_image, (21, 21), 0)
-
-       if initialState is None:
-           initialState = gray_frame
-           continue
-
-       differ_frame = cv2.absdiff(initialState, gray_frame)
-
-       thresh_frame = cv2.threshold(differ_frame, 30, 255, cv2.THRESH_BINARY)[1]
-
-       thresh_frame = cv2.dilate(thresh_frame, None, iterations = 2)
-
-       cont,_ = cv2.findContours(thresh_frame.copy(),
-                          cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-       for cur in cont:
-           if cv2.contourArea(cur) < 200:
-               continue
-           return True
+from getFerries import getFerriPoints
+import cv2, PIL
+from cv2 import aruco
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+debug = True
+frame = cv2.imread("./Markers/darttranform.jpg")
+grayImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+(thresh, gray) = cv2.threshold(grayImage, 15, 255, cv2.THRESH_BINARY)
+myFerriMerris = []
+aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_1000)
+parameters =  aruco.DetectorParameters_create()
+if debug:cv2.imshow("new",gray)
+if debug:cv2.waitKey(0)
+corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
+if debug:plt.figure()
+if debug:plt.imshow(frame_markers)
+if debug:print("Number of Ferries detected :", len(ids), "\n Ferries detected :", ids)
+for i in range(len(ids)):
+    if ids[i] < 13:
+        c = corners[i][0]
+        if debug:plt.plot([c[:, 0].mean()], [c[:, 1].mean()], "o", label = "id={0}".format(ids[i]))
+if debug:plt.legend()
+if debug:plt.show()

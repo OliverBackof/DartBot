@@ -1,5 +1,5 @@
 import cv2
-from getFerries import getFerriPoints
+from getFerriesTest import getFerriPoints
 import time
 from getDartImpactTest import getDartImpactTest
 from coordsToField import coordsToField
@@ -9,9 +9,8 @@ old = cv2.imread("./Markers/dart.png")
 new = cv2.imread("./Markers/dart.png")
 impact = getDartImpactTest(old, new)
 while True:
-    impact = (716,166)
-    ferries = getFerriPoints(new)
-    field = coordsToField(ferries, impact, new)
+    ferries = getFerriPoints(new, True)
+    field = coordsToField(ferries, impact, new, True)
     plt.figure()
     plt.imshow(new)
     plt.plot(impact[0],impact[1], "o", label = field)
