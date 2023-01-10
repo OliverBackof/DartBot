@@ -19,23 +19,23 @@ def getDartImpact(before, after, ferries, debug):
 
     gray_frame_before = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
     #gray_frame_before = cv2.GaussianBlur(gray_frame_before, (5, 5), 0)
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(20,20))
 
     #normalized_image = cv2.normalize(gray_frame_before, None, alpha=100, beta=255, norm_type=cv2.NORM_MINMAX)
     #gray_frame_after = cv2.normalize(gray_frame_after, None, alpha=100, beta=255, norm_type=cv2.NORM_MINMAX)
 
-    normalized_image = clahe.apply(gray_frame_before)
-    gray_frame_after = clahe.apply(gray_frame_after)
+    #normalized_image = clahe.apply(gray_frame_before)
+    #gray_frame_after = clahe.apply(gray_frame_after)
 
-    if debug:cv2.imshow('davor', gray_frame_before)
-    if debug:cv2.imshow('danach', normalized_image)
-    if debug:cv2.waitKey(0)
-    initialState = normalized_image
+    #if debug:cv2.imshow('davor', gray_frame_before)
+    #if debug:cv2.imshow('danach', normalized_image)
+    #if debug:cv2.waitKey(0)
+    initialState = gray_frame_before#normalized_image
 
 
     differ_frame = cv2.absdiff(initialState, gray_frame_after)
 
-    thresh_frame = cv2.threshold(differ_frame, 40, 255, cv2.THRESH_BINARY)[1]
+    thresh_frame = cv2.threshold(differ_frame, 70, 255, cv2.THRESH_BINARY)[1]
 
     thresh_frame = cv2.dilate(thresh_frame, None, iterations = 2)
 
@@ -53,7 +53,7 @@ def getDartImpact(before, after, ferries, debug):
     rightmost_x = 0
     rightmost_y = 0
     for cur in cont:
-       if cv2.contourArea(cur) > 1000:
+       if cv2.contourArea(cur) > 100:
            for point in cur:
                x, y = point[0]
                if x > rightmost_x:

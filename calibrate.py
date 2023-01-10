@@ -5,6 +5,7 @@ import cv2
 from numpy import asarray
 from numpy import savetxt
 import numpy
+from transformPic import transformPicture
 engine = pyttsx3.init()
 def talk(text):
     engine.say(text)
@@ -36,10 +37,21 @@ def calibrate(cam):
     # define data
     data = asarray([left,up,right,down])
     # save to csv file
-    savetxt('calibration.csv', data, delimiter=',')
+    savetxt('generalCalibration.csv', data, delimiter=',')
 
 
-cam = cv2.VideoCapture(2)
+
+
+
+cam = cv2.VideoCapture(3)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-calibrate(cam)
+#calibrate(cam)
+
+ferries = getFerriPoints(cam,False,True)
+
+temp = []
+for x in ferries:
+    temp.append([x.id,x.x,x.y])
+    data = asarray(temp, dtype=object)
+    savetxt('ferries.csv', data, delimiter=',')

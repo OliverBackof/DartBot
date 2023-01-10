@@ -26,7 +26,7 @@ def getFerriPoints(cam, debug, minLengthRequired):
             ret, frame = cam.read()
             grayImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            data = loadtxt('calibration.csv', delimiter=',')
+            data = loadtxt('generalCalibration.csv', delimiter=',')
             grayImage = transformPicture(grayImage,data)
 
             (thresh, gray) = cv2.threshold(grayImage, 127, 255, cv2.THRESH_BINARY)
